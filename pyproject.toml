@@ -5,12 +5,12 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "raggem"
 version = "2.0.0"
-description = "Hardened RAG HTTP API service (Gemini + ChromaDB)."
+description = "Hardened RAG service with REST API, CLI and optional MCP server."
 readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.10"
 authors = [{ name = "RagGem maintainers" }]
-keywords = ["rag", "retrieval-augmented-generation", "gemini", "chromadb", "fastapi"]
+keywords = ["rag", "retrieval-augmented-generation", "gemini", "chromadb", "fastapi", "mcp"]
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
@@ -31,7 +31,11 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+mcp = ["mcp>=1.0"]
 dev = ["pytest>=8.0", "httpx>=0.27"]
+
+[project.scripts]
+raggem = "raggem.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

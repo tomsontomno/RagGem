@@ -9,7 +9,7 @@ than guessing.
 - **Models:** Google Gemini (`gemini-flash-lite` for answers, `gemini-embedding-2`
   for embeddings). No LangChain.
 - **Vector store:** ChromaDB, embedded - zero external services to run.
-- **Interface:** a single HTTP API, ready to call from a website or backend.
+- **Interfaces:** HTTP API (for a website), a CLI, and an optional MCP server.
 - **Isolation:** each knowledge base is a separate **"brain"**; they never mix.
 
 > The application layer (the website/UI) is **not** part of this repo. This is
@@ -38,8 +38,8 @@ docker run -p 8100:8100 --env-file .env -v raggem-data:/app/data raggem
 
 ```bash
 python -m venv .venv && source .venv/bin/activate
-pip install .                          # or: pip install -e '.[dev]' for development
-uvicorn raggem.server:app --port 8100  # API on http://localhost:8100
+pip install .                 # or: pip install -e '.[dev]' for development
+raggem serve                  # API on http://localhost:8100
 ```
 
 ---
@@ -78,6 +78,16 @@ for f in ./docs/*; do
   curl -X POST http://localhost:8100/api/v1/brains/handbook/files \
     -H "X-API-Key: $API_ADMIN_KEY" -F "file=@$f"
 done
+```
+
+### Via the CLI (local install)
+
+```bash
+raggem upload handbook ./manual.pdf                  # one file
+raggem upload handbook ./a.md ./b.txt ./catalog.json # several at once
+raggem upload handbook ./docs/*.md                   # a folder via shell glob
+raggem list handbook                                 # what's in the brain
+raggem rebuild handbook                              # re-embed everything
 ```
 
 ### Structured data (JSON)
@@ -120,6 +130,12 @@ Response - the answer plus only the sources that actually support it:
 
 If nothing in the brain supports an answer, `answer` is a polite "I don't have
 that information" and `sources` is `[]` - never a list of unrelated guesses.
+
+### CLI
+
+```bash
+raggem query handbook "Which winter tires do you have under 100 euros?" --show-sources
+```
 
 ---
 
@@ -174,7 +190,7 @@ this service. For production:
 ## 9. Project layout
 
 ```
-src/raggem/         the package (config, server, prompts, security, core/)
+src/raggem/         the package (config, cli, server, prompts, security, core/)
 tests/              test suite
 Dockerfile          single-image server
 docker-compose.yml  plug-and-play run

@@ -38,4 +38,4 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
 
 # API_ADMIN_KEY must be provided at runtime (the server refuses to start
 # without it). GOOGLE_API_KEY is required for embeddings + generation.
-CMD ["uvicorn", "raggem.server:app", "--host", "0.0.0.0", "--port", "8100"]
+CMD ["raggem", "serve", "--host", "0.0.0.0", "--port", "8100"]
