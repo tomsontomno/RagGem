@@ -1,0 +1,18 @@
+# Plug-and-play: `docker compose up -d` starts the API on http://localhost:8100
+# Provide GOOGLE_API_KEY and API_ADMIN_KEY in a .env file next to this one
+# (see .env.example). Brains persist in the named volume `raggem-data`.
+services:
+  raggem:
+    build: .
+    image: raggem:latest
+    container_name: raggem
+    ports:
+      - "8100:8100"
+    env_file:
+      - .env
+    volumes:
+      - raggem-data:/app/data
+    restart: unless-stopped
+
+volumes:
+  raggem-data:

@@ -1,0 +1,31 @@
+# Keep the build context minimal: only the package + manifests reach the image.
+.git
+.gitignore
+.venv
+venv
+ENV
+__pycache__
+*.py[cod]
+*.egg-info
+build
+dist
+
+# Secrets + runtime data never go into the image (provided at run time).
+.env
+data/
+
+# Local-only tooling, demos, examples and notes - not part of the server.
+docs/
+examples/
+demo_*.py
+scrape_*.py
+*_local.py
+tests/
+
+# Caches / IDE
+.pytest_cache
+.mypy_cache
+.ruff_cache
+.idea
+.vscode
+.DS_Store
